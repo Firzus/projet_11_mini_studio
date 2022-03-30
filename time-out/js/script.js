@@ -26,12 +26,12 @@ function create() {
 
     //création du sprite
     //var sprite = game.add.sprite(640, 360, 'player');
-    const sprite = this.add.image(x, y, 'player1');         
+    const sprite = this.add.image(960, 540, 'player1');         
 
 
     //taille du joueur
-    sprite.widht = 100
-    sprite.height = 100
+    sprite.widht = 60
+    sprite.height = 60
     //changer le pooint d'encrage
     sprite.anchor.setTo(0.5, 0.9);
     //modifier sa position
@@ -48,6 +48,7 @@ function create() {
 function update() {
 
     //enregistrement d'un évènement du clavier
+
     if (zkey.isDown) {
         sprite.y++
     }
