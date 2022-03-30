@@ -61,5 +61,3 @@ function update() {
         sprite.x--
     }
 }
-
-</script>
