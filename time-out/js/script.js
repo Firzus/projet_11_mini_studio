@@ -1,10 +1,3 @@
-document.addEventListener("dbclick", () => {
-    document.documentElement.requestFullscreen().catch((e) => {
-        console.log(e);
-    });
-});
-
-
 var config = {
     type: Phaser.AUTO,
     width: 1920,
