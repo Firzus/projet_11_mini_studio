@@ -79,7 +79,7 @@ function update() {
     if (cursors.left.isDown)
     {
         player.setVelocityX(-160);
-        player('player2');
+        player('player2');git
     }
     else if (cursors.right.isDown)
     {
