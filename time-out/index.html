@@ -7,52 +7,12 @@
         content="Vous incarnez un personnage qui doit sortir d'un parc d'attraction avant d'être piègé totalement dans le noir (car une éclipse arrive !). Il devra avancer dans le parc en résolvant des énigme et en interagissant avec les divers décors et attractions (stands, panneaux,...).">
     <title>Time Out - Eclipse Time Studio</title>
     <script src="https://cdn.jsdelivr.net/npm/phaser@3.15.1/dist/phaser-arcade-physics.min.js"></script>
-
-    <style type="text/css">
-        body {
-            background-color: black;
-            margin: 0;
-        }
-    </style>
-
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/script.js"></script>
 </head>
 
 <body>
-
-    <script type="text/javascript">
-
-        var config = {
-            type: Phaser.AUTO,
-            width: 1280,
-            height: 720,
-            scene: {
-                preload: preload,
-                create: create,
-            }
-        };
-
-        var game = new Phaser.Game(config);
-
-        function preload() {
-            this.load.image('map', 'assets/map.png');
-        }
-
-        function create() {
-            this.add.image(640, 360, 'map');
-            var r1 = this.add.rectangle(1200, 110, 40, 40);
-            var r2 = this.add.rectangle(1100, 110, 40, 40);
-            var r3 = this.add.rectangle(1000, 110, 40, 40);
-            r1.setStrokeStyle(2, 0x1a65ac);
-            r2.setStrokeStyle(2, 0x008000);
-            r3.setStrokeStyle(2, 0xff0000);
-        }
-
-        function update() {
-
-        }
-
-    </script>
-
+    <div id='mygame'></div>
 </body>
 
 </html>
