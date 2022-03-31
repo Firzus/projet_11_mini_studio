@@ -12,7 +12,7 @@ var config = {
         preload: preload,
         create: create,
         update: update,
-    }  
+    }
 };
 
 var game = new Phaser.Game(config);
@@ -29,6 +29,7 @@ var player;
 var platforms;
 
 function create() {
+
     this.add.image(0, 0,'start_map').setOrigin(0, 0); 
     var r1 = this.add.rectangle(1200, 110, 40, 40);
     var r2 = this.add.rectangle(1100, 110, 40, 40);
@@ -63,6 +64,12 @@ function create() {
     player.setBounce(0.2);
     player.setCollideWorldBounds(true);
 
+
+    qkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
+    dkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+    zkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
+    skey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+
 }
 
 function update() {
@@ -83,68 +90,68 @@ function update() {
         y--;
     }*/
 
-    if (cursors.left.isDown)                            //Allez a gauche
+    if (qkey.isDown)                            //Allez a gauche
     {
         player.setVelocityY(0);
         player.setVelocityX(-160);
         player.setTexture('player3');
-        if (cursors.up.isDown && cursors.left.isDown)
+        if (zkey.isDown && qkey.isDown)
         {
             player.setVelocity(-160,-160);
             player.setTexture('player4');
         }
-        if (cursors.down.isDown && cursors.left.isDown)
+        if (skey.isDown && qkey.isDown)
         {
             player.setVelocity(-160,160);
             player.setTexture('player2');
         }
 
     }
-    else if (cursors.right.isDown)                      //Allez a droite
+    else if (dkey.isDown)                      //Allez a droite
     {
         player.setVelocityY(0);
         player.setVelocityX(160);
         player.setTexture('player7');
 
-        if (cursors.up.isDown && cursors.right.isDown)
+        if (zkey.isDown && dkey.isDown)
         {
             player.setVelocity(160,-160);
             player.setTexture('player6');
         }
-        if (cursors.down.isDown && cursors.right.isDown)
+        if (skey.isDown && dkey.isDown)
         {
             player.setVelocity(160,160);
             player.setTexture('player8');
         }
 
     }
-    else if (cursors.up.isDown)                         //Allez en haut
+    else if (zkey.isDown)                         //Allez en haut
     {
         player.setVelocityX(0);
         player.setVelocityY(-160);
         player.setTexture('player5');
-        if (cursors.up.isDown && cursors.left.isDown)
+        if (zkey.isDown && qkey.isDown)
         {
             player.setVelocity(-160,-160);
             player.setTexture('player2');
         }
-        if (cursors.up.isDown && cursors.right.isDown)
+        if (zkey.isDown &&  dkey.isDown)
         {
             player.setVelocity(160,-160);
             player.setTexture('player6');
         }
     }
-    else if (cursors.down.isDown)                       //Allez en bas
+    else if (skey.isDown)                       //Allez en bas
     {
         player.setVelocityX(0);
         player.setVelocityY(160);
         player.setTexture('player1');
-        if (cursors.down.isDown && cursors.right.isDown)
+        if (skey.isDown && dkey.isDown)
         {
             player.setVelocity(160,160);
             player.setTexture('player8');
         }
-        if (cursors.down.isDown && cursors.left.isDown)
+        if (skey.isDown && qkey.isDown)
         {
             player.setVelocity(-160,160);
             player.setTexture('player2');
@@ -157,7 +164,7 @@ function update() {
         player.setVelocityY(0);
     }
     
-    if (cursors.up.isDown && player.body.touching.down)
+    if (zkey.isDown && player.body.touching.down)
     {
         player.setVelocityY(-330);
     }
