@@ -21,7 +21,7 @@ var game = new Phaser.Game(config);
 function preload() {
     this.load.image('start_map', 'assets/start_map.jpg'); 
 
-    for (var i = 1; i<8; i++) {
+    for (var i = 1; i<9; i++) {
         this.load.image('player'+i,"assets/player"+i)
     }
 }
@@ -83,49 +83,75 @@ function update() {
         y--;
     }*/
 
-    if (cursors.left.isDown)
+    if (cursors.left.isDown)                            //Allez a gauche
     {
+        player.setVelocityY(0);
         player.setVelocityX(-160);
         player.setTexture('player3');
+        if (cursors.up.isDown && cursors.left.isDown)
+        {
+            player.setVelocity(-160,-160);
+            player.setTexture('player4');
+        }
+        if (cursors.down.isDown && cursors.left.isDown)
+        {
+            player.setVelocity(-160,160);
+            player.setTexture('player2');
+        }
+
     }
-    else if (cursors.right.isDown)
+    else if (cursors.right.isDown)                      //Allez a droite
     {
+        player.setVelocityY(0);
         player.setVelocityX(160);
         player.setTexture('player7');
+
+        if (cursors.up.isDown && cursors.right.isDown)
+        {
+            player.setVelocity(160,-160);
+            player.setTexture('player6');
+        }
+        if (cursors.down.isDown && cursors.right.isDown)
+        {
+            player.setVelocity(160,160);
+            player.setTexture('player8');
+        }
+
     }
-    else if (cursors.up.isDown)
+    else if (cursors.up.isDown)                         //Allez en haut
     {
+        player.setVelocityX(0);
         player.setVelocityY(-160);
         player.setTexture('player5');
+        if (cursors.up.isDown && cursors.left.isDown)
+        {
+            player.setVelocity(-160,-160);
+            player.setTexture('player2');
+        }
+        if (cursors.up.isDown && cursors.right.isDown)
+        {
+            player.setVelocity(160,-160);
+            player.setTexture('player6');
+        }
     }
-    else if (cursors.down.isDown)
+    else if (cursors.down.isDown)                       //Allez en bas
     {
+        player.setVelocityX(0);
         player.setVelocityY(160);
         player.setTexture('player1');
-    }
+        if (cursors.down.isDown && cursors.right.isDown)
+        {
+            player.setVelocity(160,160);
+            player.setTexture('player8');
+        }
+        if (cursors.down.isDown && cursors.left.isDown)
+        {
+            player.setVelocity(-160,160);
+            player.setTexture('player2');
+        }
 
-    /*else if (cursors.left.isDown)
-    {
-        player.setVelocityX(-160);
-        player.setVelocityY(-160);            
     }
-    else if (cursors.right.isDown && cursors.up.isDown)
-    {
-        player.setVelocityX(160);
-        player.setVelocityY(-160);            
-    }
-    else if (cursors.left.isDown && cursors.down.isDown)
-    {
-        player.setVelocityX(-160);
-        player.setVelocityY(160);
-    }
-    else if (cursors.right.isDown && cursors.down.isDown)
-    {
-        player.setVelocityX(160);
-        player.setVelocityY(160);
-    }*/
-
-    else
+    else                                                //S'arreter (ne rien faire)
     {
         player.setVelocityX(0);
         player.setVelocityY(0);
