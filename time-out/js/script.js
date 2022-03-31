@@ -20,9 +20,10 @@ var game = new Phaser.Game(config);
 
 function preload() {
     this.load.image('start_map', 'assets/start_map.jpg'); 
-    this.load.image('player1', 'assets/player1.png');
-    this.load.image('player2', 'assets/player2.png');
-    this.load.image('dude', 'assets/player1.png' );
+
+    for (var i = 1; i<8; i++) {
+        this.load.image('player'+i,"assets/player"+i)
+    }
 }
 var player;
 var platforms;
@@ -57,7 +58,7 @@ function create() {
     sprite.positioon.setToo(x, y);*/
     
     cursors = this.input.keyboard.createCursorKeys();
-    player = this.physics.add.sprite(100, 450, 'dude');
+    player = this.physics.add.sprite(100, 450, 'player5');
 
     player.setBounce(0.2);
     player.setCollideWorldBounds(true);
@@ -85,19 +86,22 @@ function update() {
     if (cursors.left.isDown)
     {
         player.setVelocityX(-160);
-        player('player2');git
+        player.setTexture('player3');
     }
     else if (cursors.right.isDown)
     {
         player.setVelocityX(160);
+        player.setTexture('player7');
     }
     else if (cursors.up.isDown)
     {
         player.setVelocityY(-160);
+        player.setTexture('player5');
     }
     else if (cursors.down.isDown)
     {
         player.setVelocityY(160);
+        player.setTexture('player1');
     }
 
     /*else if (cursors.left.isDown)
