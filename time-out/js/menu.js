@@ -16,8 +16,7 @@ export default class MainMenuScene extends Phaser.Scene
 
 	preload()
     {
-		this.load.image('glass-panel', 'assets/glassPanel.png')
-		this.load.image('cursor-hand', 'assets/cursor_hand.png')
+		// A REFAIRE (ENVIE DE SUICIDE)
     }
 
     create()
@@ -48,17 +47,17 @@ export default class MainMenuScene extends Phaser.Scene
 
 	selectButton(index: number)
 	{
-		// TODO
+		// FAUT REFAIRE
 	}
 
 	selectNextButton(change = 1)
 	{
-		// TODO
+		// FAUT REFAIRE 
 	}
 
 	confirmSelection()
 	{
-		// TODO
+		// FAUT REFAIRE
 	}
 	
 	update()
