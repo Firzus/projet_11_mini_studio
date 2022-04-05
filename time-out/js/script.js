@@ -19,7 +19,8 @@ var game = new Phaser.Game(config);
 
 
 function preload() {
-    this.load.image('start_map', 'assets/start_map.jpg'); 
+    this.load.image('start_map', 'assets/start_map.jpg');
+    this.load.image('cle', 'assets/cle.png'); 
 
     for (var i = 1; i<9; i++) {
         this.load.image('player'+i,"assets/player"+i)
@@ -58,6 +59,9 @@ function create() {
     //modifier sa position
     sprite.positioon.setToo(x, y);*/
     
+    var inventaire = [];                            //création de l'inventaire sous forme de liste
+
+
     cursors = this.input.keyboard.createCursorKeys();
     player = this.physics.add.sprite(100, 450, 'player5');
 
@@ -65,14 +69,52 @@ function create() {
     player.setCollideWorldBounds(true);
 
 
+    //interact = this.input.keyboard.addKey(Phaser.Input.keyboard.keyCodes.E);
     qkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
     dkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
     zkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
     skey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+    ekey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
+
+
+    obj_clef = this.physics.add.group({             //création des objets que le joueur récupère
+        key: 'cle',
+        setSize: {width: 50, height: 50},
+        setXY: { x: 500, y: 500}
+
+    });
+    obj_badge = this.physics.add.group({
+        key: 'badge',
+        setSize: {width: 50, height: 50},
+        setXY: { x: 500, y: 500}
+
+    });
+    obj_bouteille_vide = this.physics.add.group({
+        key: 'bouteille_vide',
+        setSize: {width: 50, height: 50},
+        setXY: { x: 500, y: 500}
+
+    });
+
+    obj_clef.children.iterate(function (child) {
+    
+        child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
+    
+    });
+
+
+
 
 }
 
+function collectKey (player, obj_clef)
+{
+    obj_clef.disableBody(true, true);
+}
+
+
 function update() {
+
 
     /*enregistrement d'un évènement du clavier
 
@@ -89,6 +131,10 @@ function update() {
     if (cursors.left.isDown) {
         y--;
     }*/
+    if (ekey.isDown)
+    {
+        this.physics.add.overlap(player, obj_clef, collectKey, null, this);       //ramasse la clé avec la touche 'E'
+    }
 
     if (qkey.isDown)                            //Allez a gauche
     {
