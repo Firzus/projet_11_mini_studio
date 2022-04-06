@@ -20,14 +20,27 @@ var game = new Phaser.Game(config);
 
 function preload() {
     this.load.image('start_map', 'assets/start_map.jpg');
-    this.load.image('cle', 'assets/cle.png'); 
+
+    this.load.image('porte', 'assets/porte_ferme.png');             //obstacle
+
+    this.load.image('cle', 'assets/props/Cle_blanche.png');         //objet recupérable
+    this.load.image('crowbar', 'assets/props/crowbar.png'); 
+    this.load.image('bouteille_vide', 'assets/props/Bouteille_vide_v2.png');
+    this.load.image('bouteille_pleine', 'assets/props/Bouteille_pleine.png'); 
+    this.load.image('badge', 'assets/props/Badge_v2.png'); 
 
     for (var i = 1; i<9; i++) {
-        this.load.image('player'+i,"assets/player"+i)
+        this.load.image('player'+i,"assets/joueur/player"+i+".png")
     }
 }
 var player;
 var platforms;
+
+var haveKey = false;                        //variable si le joueur possède l'objet
+var haveBadge = false;
+var haveCrowbar = false;
+var haveBouteilleVide = false;
+var haveBouteillePleine = false;
 
 function create() {
 
@@ -59,7 +72,6 @@ function create() {
     //modifier sa position
     sprite.positioon.setToo(x, y);*/
     
-    var inventaire = [];                            //création de l'inventaire sous forme de liste
 
 
     cursors = this.input.keyboard.createCursorKeys();
@@ -80,7 +92,7 @@ function create() {
     obj_clef = this.physics.add.group({             //création des objets que le joueur récupère
         key: 'cle',
         setSize: {width: 50, height: 50},
-        setXY: { x: 500, y: 500}
+        setXY: { x: 200, y: 500}
 
     });
     obj_badge = this.physics.add.group({
@@ -89,12 +101,32 @@ function create() {
         setXY: { x: 500, y: 500}
 
     });
+    obj_crowbar = this.physics.add.group({
+        key: 'crowbar',
+        setSize: {width: 50, height: 50},
+        setXY: { x: 800, y: 500}
+
+    });
     obj_bouteille_vide = this.physics.add.group({
         key: 'bouteille_vide',
         setSize: {width: 50, height: 50},
-        setXY: { x: 500, y: 500}
+        setXY: { x: 1100, y: 500}
 
     });
+    obj_bouteille_pleine = this.physics.add.group({
+        key: 'bouteille_pleine',
+        setSize: {width: 50, height: 50},
+        setXY: { x: 1400, y: 500}
+
+    });
+    door_close = this.physics.add.group({
+        key: 'porte',
+        setSize: {width: 50, height: 50},
+        setXY: { x: 500, y: 200}
+
+    });
+
+
 
     obj_clef.children.iterate(function (child) {
     
@@ -110,7 +142,14 @@ function create() {
 function collectKey (player, obj_clef)
 {
     obj_clef.disableBody(true, true);
+    haveKey = true;
+    return haveKey
 }
+function door (player, door_close)
+{
+    door_close.disableBody(true, true);
+}
+
 
 
 function update() {
@@ -131,9 +170,16 @@ function update() {
     if (cursors.left.isDown) {
         y--;
     }*/
+    
+
+
     if (ekey.isDown)
     {
         this.physics.add.overlap(player, obj_clef, collectKey, null, this);       //ramasse la clé avec la touche 'E'
+    }
+    if (ekey.isDown && haveKey)
+    {
+        this.physics.add.overlap(player, door_close, door, null, this);
     }
 
     if (qkey.isDown)                            //Allez a gauche
@@ -213,5 +259,10 @@ function update() {
     if (zkey.isDown && player.body.touching.down)
     {
         player.setVelocityY(-330);
+    }
+
+    if (haveKey)
+    {
+
     }
 }
