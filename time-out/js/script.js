@@ -35,12 +35,16 @@ function preload() {
 }
 var player;
 var platforms;
+var monTexte;
 
 var haveKey = false;                        //variable si le joueur possède l'objet
 var haveBadge = false;
 var haveCrowbar = false;
 var haveBouteilleVide = false;
 var haveBouteillePleine = false;
+
+this.pause = false;
+this.one = false;
 
 function create() {
 
@@ -87,6 +91,9 @@ function create() {
     zkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
     skey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
     ekey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
+    pkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
+    okey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.O);
+
 
 
     obj_clef = this.physics.add.group({             //création des objets que le joueur récupère
@@ -133,10 +140,10 @@ function create() {
         child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
     
     });
-
-
-
-
+    
+    
+    
+    
 }
 
 function collectKey (player, obj_clef)
@@ -153,7 +160,17 @@ function door (player, door_close)
 
 
 function update() {
-
+    
+    if(pkey.isDown) {
+        this.pause = !this.pause;
+        this.one = true;
+        this.add.text(700, 300, 'PAUSE', { font: "35px Arial Black"   });
+    }
+    
+    if(this.pause){
+        game.input.onDown.addOnce(removeText, this);
+        return;
+    }
 
     /*enregistrement d'un évènement du clavier
 
