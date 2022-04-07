@@ -18,29 +18,40 @@ var config = {
 var game = new Phaser.Game(config);
 
 
-function preload() {
-    this.load.image('start_map', 'assets/start_map.jpg');
+function preload() {                                                //chargement des image du jeu
 
-    this.load.image('porte', 'assets/porte_ferme.png');             //obstacle
+    this.load.image('start_map', 'assets/start_map.jpg');           //map teste
 
     this.load.image('cle', 'assets/props/Cle_blanche.png');         //objet recupérable
+    this.load.image('badge', 'assets/props/Badge_v2.png');    
     this.load.image('crowbar', 'assets/props/crowbar.png'); 
     this.load.image('bouteille_vide', 'assets/props/Bouteille_vide_v2.png');
     this.load.image('bouteille_pleine', 'assets/props/Bouteille_pleine.png'); 
-    this.load.image('badge', 'assets/props/Badge_v2.png'); 
+    this.load.image('outil', 'assets/props/clamp.png');
+    this.load.image('pagaies', 'assets/props/paddle.png');
+    this.load.image('cables', 'assets/props/Cables.png');
+    this.load.image('volant', 'assets/props/car_wheel.png');
 
-    for (var i = 1; i<9; i++) {
+    for (var i = 1; i<9; i++) {                                     //différente façade du joueur
         this.load.image('player'+i,"assets/joueur/player"+i+".png")
     }
 }
-var player;
-var platforms;
+
+
+
+var player;                                 //variable joueur
 
 var haveKey = false;                        //variable si le joueur possède l'objet
 var haveBadge = false;
 var haveCrowbar = false;
 var haveBouteilleVide = false;
 var haveBouteillePleine = false;
+var haveOutil = false;
+var havePagaies = false;
+var haveCables = false;
+var haveVolant = false;
+
+
 
 function create() {
 
@@ -81,107 +92,125 @@ function create() {
     player.setCollideWorldBounds(true);
 
 
-    //interact = this.input.keyboard.addKey(Phaser.Input.keyboard.keyCodes.E);
-    qkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
-    dkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
-    zkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
-    skey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
-    ekey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
+                                                                         //assignation des touches de jeux
+
+    qkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q); //allez a gauche
+    dkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D); //allez a droite
+    zkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z); //allez en haut
+    skey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S); //allez en bas
+    ekey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E); //interagir
 
 
-    obj_clef = this.physics.add.group({             //création des objets que le joueur récupère
+                                                        //création des objets que le joueur peut récupèrer
+    obj_clef = this.physics.add.group({                 //Clé
         key: 'cle',
         setSize: {width: 50, height: 50},
         setXY: { x: 200, y: 500}
-
     });
-    obj_badge = this.physics.add.group({
+    obj_badge = this.physics.add.group({                //badge
         key: 'badge',
         setSize: {width: 50, height: 50},
         setXY: { x: 500, y: 500}
-
     });
-    obj_crowbar = this.physics.add.group({
+    obj_crowbar = this.physics.add.group({              //pied de biche
         key: 'crowbar',
         setSize: {width: 50, height: 50},
         setXY: { x: 800, y: 500}
-
     });
-    obj_bouteille_vide = this.physics.add.group({
-        key: 'bouteille_vide',
+    obj_bouteille_vide = this.physics.add.group({       //bouteille vide
+        key: 'bouteille_vide',  
         setSize: {width: 50, height: 50},
         setXY: { x: 1100, y: 500}
-
     });
-    obj_bouteille_pleine = this.physics.add.group({
+    obj_bouteille_pleine = this.physics.add.group({     //bouteille pleine
         key: 'bouteille_pleine',
         setSize: {width: 50, height: 50},
         setXY: { x: 1400, y: 500}
-
     });
-    door_close = this.physics.add.group({
-        key: 'porte',
+    obj_outil = this.physics.add.group({                //outil de cablage
+        key: 'outil',
         setSize: {width: 50, height: 50},
-        setXY: { x: 500, y: 200}
-
+        setXY: { x: 500, y: 800}
+    }); 
+    obj_pagaies = this.physics.add.group({              //pagaies
+        key: 'pagaies',
+        setSize: {width: 50, height: 50},
+        setXY: { x: 800, y: 800}
     });
-
-
-
-    obj_clef.children.iterate(function (child) {
-    
-        child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
-    
+    obj_cables = this.physics.add.group({               //cables
+        key: 'cables',
+        setSize: {width: 50, height: 50},
+        setXY: { x: 1100, y: 800}
     });
-
-
-
+    obj_volant = this.physics.add.group({               //volant de voiture
+        key: 'volant',
+        setSize: {width: 50, height: 50},
+        setXY: { x: 1400, y: 800}
+    });
 
 }
-
 function collectKey (player, obj_clef)
 {
     obj_clef.disableBody(true, true);
     haveKey = true;
     return haveKey
 }
-function door (player, door_close)
+function collectBadge (player, obj_badge)
 {
-    door_close.disableBody(true, true);
+    obj_badge.disableBody(true, true);
+    haveBadge = true;
+    return haveBadge
 }
+function collectCrowbar (player, obj_crowbar)
+{
+    obj_crowbar.disableBody(true, true);
+    haveCrowbar = true;
+    return haveCrowbar
+}
+function collectBouteilleVide (player, obj_bouteille_vide)
+{
+    obj_bouteille_vide.disableBody(true, true);
+    haveBouteilleVide = true;
+    return haveBouteilleVide
+}
+function collectBouteillePleine (player, obj_bouteille_pleine)
+{
+    obj_bouteille_pleine.disableBody(true, true);
+    haveBouteillePleine = true;
+    return haveBouteillePleine
+}
+function collectOutil (player, obj_outil)
+{
+    obj_outil.disableBody(true, true);
+    haveOutil = true;
+    return haveOutil
+}
+function collectPagaies (player, obj_pagaies)
+{
+    obj_pagaies.disableBody(true, true);
+    havePagaies = true;
+    return havePagaies
+}
+function collectCables (player, obj_cables)
+{
+    obj_cables.disableBody(true, true);
+    haveCables = true;
+    return haveCables
+}
+function collectVolant (player, obj_volant)
+{
+    obj_volant.disableBody(true, true);
+    haveVolant = true;
+    return haveVolant
+}
+
+
 
 
 
 function update() {
 
-
-    /*enregistrement d'un évènement du clavier
-
-    if (cursors.up.isDown) {
-        sprite.y = 500;
-        x=500;sz
-    }
-    if (cursors.right.isDown) {
-        sprite.x = 500;
-    }
-    if (cursors.down.isDown) {
-        y--;
-    }
-    if (cursors.left.isDown) {
-        y--;
-    }*/
-    
-
-
-    if (ekey.isDown)
-    {
-        this.physics.add.overlap(player, obj_clef, collectKey, null, this);       //ramasse la clé avec la touche 'E'
-    }
-    if (ekey.isDown && haveKey)
-    {
-        this.physics.add.overlap(player, door_close, door, null, this);
-    }
-
+                                                //direction joueur
     if (qkey.isDown)                            //Allez a gauche
     {
         player.setVelocityY(0);
@@ -199,7 +228,7 @@ function update() {
         }
 
     }
-    else if (dkey.isDown)                      //Allez a droite
+    else if (dkey.isDown)                       //Allez a droite
     {
         player.setVelocityY(0);
         player.setVelocityX(160);
@@ -217,7 +246,7 @@ function update() {
         }
 
     }
-    else if (zkey.isDown)                         //Allez en haut
+    else if (zkey.isDown)                       //Allez en haut
     {
         player.setVelocityX(0);
         player.setVelocityY(-160);
@@ -254,15 +283,24 @@ function update() {
     {
         player.setVelocityX(0);
         player.setVelocityY(0);
+
+        if (ekey.isDown)                                                      //ramasse les objets quand le joueur est dessus avec la touche 'E'
+        {
+            this.physics.add.overlap(player, obj_clef, collectKey, null, this);      
+            this.physics.add.overlap(player, obj_badge, collectBadge, null, this);
+            this.physics.add.overlap(player, obj_crowbar, collectCrowbar, null, this);
+            this.physics.add.overlap(player, obj_bouteille_vide, collectBouteilleVide, null, this);
+            this.physics.add.overlap(player, obj_bouteille_pleine, collectBouteillePleine, null, this);
+            this.physics.add.overlap(player, obj_outil, collectOutil, null, this);
+            this.physics.add.overlap(player, obj_pagaies, collectPagaies, null, this);
+            this.physics.add.overlap(player, obj_cables, collectCables, null, this);
+            this.physics.add.overlap(player, obj_volant, collectVolant, null, this);
+        }
     }
     
     if (zkey.isDown && player.body.touching.down)
     {
         player.setVelocityY(-330);
     }
-
-    if (haveKey)
-    {
-
-    }
+    
 }
