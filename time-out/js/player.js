@@ -3,7 +3,7 @@ this.game.load.image('player', '/asset/player.png')
 
 function GameState() {
 
-    thisCreate = function {
+    thisCreate = function () {
 
         //création du sprite
         var sprite = game.add.sprite(x, y, 'player');
@@ -21,7 +21,7 @@ function GameState() {
     }
 
 
-    thisCreate = function {
+    thisCreate = function (){
 
         var zKey = game.input.keyboard.addKey(Phaser.Keyboard.Z);
         var sKey = game.input.keyboard.addKey(Phaser.Keyboard.S);
@@ -30,8 +30,6 @@ function GameState() {
     }
 
     this.update() {
-
-
 
         //enregistrement d'un évènement du clavier
         if (zkey.isDown) {
