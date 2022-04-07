@@ -32,6 +32,10 @@ function preload() {                                                //chargement
     this.load.image('cables', 'assets/props/Cables.png');
     this.load.image('volant', 'assets/props/car_wheel.png');
 
+                                                                        //enigme
+    this.load.image('porte_ferme', 'assets/props/porte_ferme.png');     //porte ferme a clé
+    this.load.image('fontaine', 'assets/props/fontaine.png');
+
     for (var i = 1; i<9; i++) {                                     //différente façade du joueur
         this.load.image('player'+i,"assets/joueur/player"+i+".png")
     }
@@ -41,15 +45,8 @@ function preload() {                                                //chargement
 
 var player;                                 //variable joueur
 
-var haveKey = false;                        //variable si le joueur possède l'objet
-var haveBadge = false;
-var haveCrowbar = false;
-var haveBouteilleVide = false;
-var haveBouteillePleine = false;
-var haveOutil = false;
-var havePagaies = false;
-var haveCables = false;
-var haveVolant = false;
+var haveKey, haveBadge, haveCrowbar, haveBouteilleVide, haveBouteillePleine, haveOutil, havePagaies, haveCables, haveVolant = false;          //variable si le joueur possède l'objet
+        
 
 
 
@@ -82,7 +79,6 @@ function create() {
     sprite.anchor.setTo(0.5, 0.9);
     //modifier sa position
     sprite.positioon.setToo(x, y);*/
-    
 
 
     cursors = this.input.keyboard.createCursorKeys();
@@ -148,6 +144,20 @@ function create() {
         setXY: { x: 1400, y: 800}
     });
 
+                                                        //enigme / obstacle
+    obj_porte_ferme = this.physics.add.group({               //porte ferme a clé
+        key: 'porte_ferme',
+        setSize: {width: 50, height: 50},
+        setXY: { x: 1400, y: 800}
+    });
+    obj_fontaine = this.physics.add.group({               //fontaine pour remplir la bouteille
+        key: 'fontaine',
+        setSize: {width: 50, height: 50},
+        setXY: { x: 1400, y: 800}
+    });
+
+
+
 }
 function collectKey (player, obj_clef)
 {
@@ -206,6 +216,10 @@ function collectVolant (player, obj_volant)
 
 
 
+function enigmePorte (player, obj_porte_ferme)
+{
+    obj_porte_ferme.disableBody(true, true);
+}
 
 
 function update() {
@@ -298,9 +312,20 @@ function update() {
         }
     }
     
+    
+    if (ekey.isDown && haveKey)                                                         //ouverture d'une porte avec la cle
+    {
+        this.physics.add.overlap(player, obj_porte_ferme, enigmePorte, null, this);
+    }
+    if (ekey.isDown && haveBouteilleVide)                                               //remplir une bouteille vide
+    {
+        haveBouteillePleine = true;
+    }
+
+
+
     if (zkey.isDown && player.body.touching.down)
     {
         player.setVelocityY(-330);
     }
-    
 }
